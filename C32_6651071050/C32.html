@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Display a random image.</title>
+    <style type="text/css">
+        body { margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="jsstyle" onclick="display_random_image();">Show Image</button>
+    </div>
+
+    <!-- Nhúng mã JavaScript -->
+    <script>
+        function display_random_image() {
+            var images = [
+                {
+                    src: "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg",
+                    width: "240",
+                    height: "160"
+                },
+                {
+                    src: "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg",
+                    width: "320",
+                    height: "195"
+                },
+                {
+                    src: "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg",
+                    width: "500",
+                    height: "343"
+                }
+            ];
+
+            // Chọn ngẫu nhiên index từ 0 đến 2
+            var randomIndex = Math.floor(Math.random() * images.length);
+            var selectedImg = images[randomIndex];
+
+            // Tìm hoặc tạo mới thẻ <img>
+            var imgElement = document.getElementById("randomImg");
+            if (!imgElement) {
+                imgElement = document.createElement("img");
+                imgElement.id = "randomImg";
+                document.body.appendChild(imgElement);
+            }
+
+            // Gán đường dẫn ảnh và kích thước
+            imgElement.src = selectedImg.src;
+            imgElement.width = selectedImg.width;
+            imgElement.height = selectedImg.height;
+        }
+    </script>
+</body>
+</html>
