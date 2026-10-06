@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chương trình máy tính</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .calc-btn { width: 30px; margin: 0 2px; }
+        .num-input { width: 60px; }
+    </style>
+</head>
+<body>
+    <input type="number" id="num1" class="num-input" value="12">
+    <button class="calc-btn" data-op="+">+</button>
+    <button class="calc-btn" data-op="-">-</button>
+    <button class="calc-btn" data-op="*">x</button>
+    <button class="calc-btn" data-op="/">/</button>
+    <button class="calc-btn" data-op="^">^</button>
+    <input type="number" id="num2" class="num-input" value="14"> =
+    <input type="text" id="result" class="num-input" readonly>
+
+    <script>
+        $(document).ready(function() {
+            $('.calc-btn').click(function() {
+                var n1 = parseFloat($('#num1').val());
+                var n2 = parseFloat($('#num2').val());
+                var op = $(this).data('op');
+                var res = 0;
+
+                if (isNaN(n1) || isNaN(n2)) {
+                    $('#result').val('Lỗi');
+                    return;
+                }
+
+                switch (op) {
+                    case '+': res = n1 + n2; break;
+                    case '-': res = n1 - n2; break;
+                    case '*': res = n1 * n2; break;
+                    case '/': res = n2 !== 0 ? n1 / n2 : 'Lỗi /0'; break;
+                    case '^': res = Math.pow(n1, n2); break;
+                }
+                $('#result').val(res);
+            });
+        });
+    </script>
+</body>
+</html>
