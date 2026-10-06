@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Validation Exercise</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .form-group { margin-bottom: 10px; }
+        label { display: inline-block; width: 220px; text-align: right; margin-right: 10px; }
+        .required::after { content: "*"; color: red; }
+    </style>
+</head>
+<body>
+    <h3>Personal Information</h3>
+    <form id="regForm">
+        <div class="form-group">
+            <label class="required">Enter name</label>
+            <input type="text" id="fullname" class="req">
+        </div>
+        <div class="form-group">
+            <label class="required">Sex</label>
+            <input type="radio" name="sex" value="Male"> Male
+            <input type="radio" name="sex" value="Female"> Female
+        </div>
+        <div class="form-group">
+            <label class="required">Enter email address</label>
+            <input type="text" id="email" class="req">
+        </div>
+        <div class="form-group">
+            <label class="required">Enter birthday (MM/DD/YYYY)</label>
+            <input type="text" id="birthday" class="req">
+        </div>
+        <div class="form-group">
+            <label class="required">Enter street address (line 1)</label>
+            <input type="text" id="address" class="req">
+        </div>
+        <div class="form-group">
+            <label class="required">Enter city</label>
+            <input type="text" id="city" class="req">
+        </div>
+        <div class="form-group">
+            <label class="required">Select a region</label>
+            <select id="region" class="req">
+                <option value="">-- Chọn --</option>
+                <option value="Asia">Asia</option>
+                <option value="Europe">Europe</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="required">Enter 5-digit ZIP code</label>
+            <input type="text" id="zipcode" class="req">
+        </div>
+        <div class="form-group" style="margin-left: 235px; margin-top: 15px;">
+            <button type="submit" id="btnFinished">Finished</button>
+            <button type="button" id="btnClear">Clear</button>
+        </div>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            // Xóa dữ liệu khi nhấn Clear
+            $('#btnClear').click(function() {
+                $('#regForm')[0].reset();
+            });
+
+            // Validate dữ liệu khi nhấn Finished (Submit)
+            $('#regForm').submit(function(e) {
+                e.preventDefault();
+
+                // 1. Kiểm tra trường rỗng (*)
+                var isValid = true;
+                $('.req').each(function() {
+                    if ($(this).val().trim() === "") {
+                        isValid = false;
+                    }
+                });
+
+                if (!$('input[name="sex"]:checked').val()) {
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    alert("Vui lòng điền đầy đủ tất cả các trường có dấu *");
+                    return;
+                }
+
+                // 2. Validate Email: đúng 1 dấu @, trước @ có account (tối đa 1 dấu chấm), sau @ có domain (ít nhất 1 dấu chấm)
+                var email = $('#email').val().trim();
+                var emailRegex = /^[^@.]+(\.[^@.]+)?@[^@.]+(\.[^@.]+)+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Email không hợp lệ! (Định dạng đúng: user hoặc user.name @ domain.com)");
+                    return;
+                }
+
+                // 3. Validate Ngày tháng năm sinh (MM/DD/YYYY hoặc MM-DD-YYYY)
+                var bday = $('#birthday').val().trim();
+                var dateRegex = /^(0[1-9]|1[0-2])[\/\-](0[1-9]|[12][0-9]|3[01])[\/\-](\d{4})$/;
+                var match = bday.match(dateRegex);
+                
+                if (!match) {
+                    alert("Ngày sinh phải có định dạng MM/DD/YYYY hoặc MM-DD-YYYY!");
+                    return;
+                }
+
+                var currentYear = new Date().getFullYear();
+                var birthYear = parseInt(match[3], 10);
+                if (birthYear >= currentYear) {
+                    alert("Năm sinh phải nhỏ hơn năm hiện tại (" + currentYear + ")!");
+                    return;
+                }
+
+                // 4. Validate Zip code: đúng 5 chữ số
+                var zip = $('#zipcode').val().trim();
+                if (!/^\d{5}$/.test(zip)) {
+                    alert("Zip code phải chứa đúng 5 chữ số!");
+                    return;
+                }
+
+                alert("Đăng ký thành công!");
+            });
+        });
+    </script>
+</body>
+</html>
